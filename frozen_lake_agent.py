@@ -30,8 +30,6 @@ def train_agent():
             if np.random.uniform(0, 1) < epsilon:
                 action = env.action_space.sample()
             else:
-                # Sirf np.argmax use karne se pehla index select hota hai agar tie ho.
-                # Isliye hum tie-breaking logic laga rahe hain taaki agent confuse na ho.
                 max_q = np.max(q_table[state])
                 actions_with_max_q = np.where(q_table[state] == max_q)[0]
                 action = np.random.choice(actions_with_max_q)
@@ -45,8 +43,6 @@ def train_agent():
             # Update q_table[state, action] using alpha, gamma, the reward, and the max Q-value of the next_state.
             # ==========================================
             max_future_q = np.max(q_table[next_state])
-            
-            # Bellman Equation Update
             q_table[state, action] = q_table[state, action] + alpha * (reward + gamma * max_future_q - q_table[state, action])
             
             
